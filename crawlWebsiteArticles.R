@@ -6,10 +6,11 @@ library(purrr)
 library(dplyr)
 
 #Manual input
-hostname <- "iform.dk" #Input the hostname (mind if there is www redirects)
-exclude_links_containing <- "index, users, facebook, jpg, jpeg" #Input words of links you'd like to exclude
-article_css <- "h1, article" #Input the CSS-selector of the content you'd like to scrape
-exclude_article_css <- "" #Input the CSS-selector of the content you'd like to NOT scrape
+hostname <- "iform.dk"                                            #Input the hostname (mind if there is www redirects)
+exclude_links_containing <- "index, users, facebook, jpg, jpeg"   #Input words of links you'd like to exclude
+article_css <- "h1, article"                                      #Input the CSS-selector of the content you'd like to scrape
+exclude_article_css <- ""                                         #Input the CSS-selector of the content you'd like to NOT scrape
+
 
 #Automated Variables and Concatenations
 url <- paste("https://", hostname, sep="")
@@ -29,6 +30,7 @@ pagecontent_css_selector <- paste(article_css, exclude_article_css_concat, sep="
 
 regex_remove_from_pagecontent <- "[\r\n]|  +" 
 # End of Automated Variables and Concatenations
+
 
 sitemap <- read_html(url) %>%
   html_nodes(link_css_selector) %>%
@@ -66,7 +68,6 @@ sitemap <- sitemap[! sitemap %in% ignore_pages]
 all_pages_content <- c()
 
 for (i in sitemap) {
-  #Insert functional web content scraping code
   if (i %in% ignore_pages){
     next
   }
@@ -95,7 +96,10 @@ print(paste("Successfully crawled ", hostname, " for article content.", sep=""))
 data_table <- data.frame(all_pages_content)
 View(data_table)
 
-# A pros' solution
+
+
+
+# A pros' solution, revisit
     # r <- read_html(url) %>%
     #   html_nodes(link_css_selector) %>%
     #   html_attr('href') %>%
